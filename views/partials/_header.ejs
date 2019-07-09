@@ -5,10 +5,31 @@
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-        <div class="navbar-nav">
+
+        <div class="nav navbar-nav">
+
           <a class="nav-item nav-link" href="/urls">My URLs</a>
           <a class="nav-item nav-link" href="/urls/new">Create New URL</a>
+          
         </div>
+        <div class="navbar-right ml-auto">
+        <%if(username===undefined){%>
+            <form class="form-inline" action="/login" method="POST">
+              <div class="form-group">
+              <input class="form-control" type="text" name="username" placeholder="Username" style="width: 200px"><pre> </pre>
+              <button type="submit" class="btn btn-outline-dark ">Login</button>
+            </div>
+            </form>
+        <%} else {%>
+            <form class="form-inline" action="/logout" method="POST">
+              <div class="form-group">
+              Logged In As : <%=username%><pre> </pre><button type="submit" class="btn btn-outline-dark ">Logout</button>
+            </div>
+            </form>
+        <%}%>
+      </div>
+        
+
       </div>
     </nav>
   </header>
