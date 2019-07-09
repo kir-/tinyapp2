@@ -19,7 +19,7 @@ const generateRandomString = () => {
   for (let i = 0; i < 6; i++) {
     randomString.push(charList[Math.floor(Math.random() * charListLength)]);
   }
-  return randomString.join('')[0];
+  return randomString.join('');
 };
 
 app.get('/',(req,res) => {
@@ -36,8 +36,9 @@ app.get('/urls', (req,res) => {
 });
 
 app.post('/urls',(req,res)=>{
-  console.log(req.body);
-  res.send('Ok');
+  let newString = generateRandomString();
+  urlDatabase[newString] = req.body.longURL;
+  res.redirect(`/urls/${newString}`);
 });
 
 app.get('/urls/new', (req,res)=>{
@@ -47,6 +48,10 @@ app.get('/urls/new', (req,res)=>{
 app.get("/urls/:shortURL", (req, res)=>{
   let templateVars = { shortURL: req.params.shortURL, longURL: urlDatabase[req.params.shortURL]};
   res.render('urls_show', templateVars);
+});
+
+app.get('/u/:shortURL', (req,res)=>{
+  res.redirect(urlDatabase[req.params.shortURL]);
 });
 
 app.get('/hello', (req,res)=>{
