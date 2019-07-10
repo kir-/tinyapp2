@@ -1,5 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const bcrypt = require('bcrypt');
 const {generateRandomString, lookupDatabase} = require('./server_functions');
 const {urlDatabase, users} = require('./database');
 const cookieParser = require('cookie-parser');
@@ -25,7 +26,7 @@ app.get('/register',(req,res)=>{
 app.post('/register',(req,res)=>{
   templateVars.id = generateRandomString();
   templateVars.email = req.body.Email;
-  templateVars.password = req.body.Password;
+  templateVars.password = bcrypt.hashSync(req.body.Password, 10);
   if (templateVars.email === "" || lookupDatabase(users,"email",templateVars.email)) {
     res.status(400).send("Error email taken");
     //res.redirect('/login');
@@ -45,9 +46,11 @@ app.post('/login', (req, res)=>{
   templateVars.email = req.body.Email;
   templateVars.password = req.body.Password;
   templateVars.id = lookupDatabase(users, 'email', templateVars.email);
-  if (templateVars.id && users[templateVars.id].password === templateVars.password) {
+  if (templateVars.id && bcrypt.compareSync(templateVars.password, users[templateVars.id].password)) {
+    templateVars.password = bcrypt.hashSync(req.body.Password, 10);
     res.cookie('userID', templateVars.id);
     res.redirect('/urls');
+    return;
   }
   res.status(404).send("Error Account not found");
   return;
