@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const bcrypt = require('bcrypt');
+const moment = require('moment');
 const {generateRandomString, lookupDatabase, dataPasser, trackClicks, getClicks} = require('./helpers');
 const {urlDatabase, users, urlsInfo} = require('./database');
 const cookieSession = require('cookie-session');
@@ -94,6 +95,7 @@ app.post('/urls',(req,res)=>{ //creates new short url and adds to database
   urlDatabase[newString] = {};
   urlDatabase[newString]['longURL'] = req.body.longURL;
   urlDatabase[newString]['userID'] = req.session.userID;
+  urlDatabase[newString]['date'] = moment().format("MMMM D, hh:mm:s");
   urlsInfo[newString] = {};
   res.redirect(`/urls/${newString}`);
 });
@@ -108,8 +110,8 @@ app.get("/urls/:shortURL", (req, res)=>{ //renders urls_show if shortURL exists
     if (urlDatabase[shortURL].longURL.slice(0,4) !== "http") {
       urlDatabase[shortURL].longURL = "http://" + urlDatabase[shortURL].longURL;
     }
-    const urlVars = { shortURL: shortURL,info: urlsInfo, counturls: getClicks, ...longUrlPasser(shortURL),...emailPasser(req.session.userID),...clickPasser(shortURL)};
-    res.render('urls_show', urlVars);
+    const templateVars = { shortURL: shortURL,info: urlsInfo, counturls: getClicks, date: urlDatabase[shortURL]['date'], ...longUrlPasser(shortURL),...emailPasser(req.session.userID),...clickPasser(shortURL)};
+    res.render('urls_show', templateVars);
   } else {
     //res.send('Permission Denied');
     res.redirect('/urls');

@@ -19,6 +19,7 @@
         <tr>
           <th scope="col">Short URL</th>
           <th scope="col">Long URL</th>
+          <th scope="col">Date</th>
           <th scope="col">Edit</th>
           <th scope="col">Delete</th>
           <th scope="col">Unique Clicks</th>
@@ -31,13 +32,15 @@
           <tr>
             <td><%= url %></td>
             <td><%= urls[url].longURL %></td>
-            <% if (urls[url].userID === id){ %>
+            <td><%= urls[url].longURL %></td>
+            <!--<% if (urls[url].userID === id){ %>-->
             <form method="GET" action="/urls/<%=url%>">
             <td><button class="btn btn-outline-primary" type="submit">Edit</button></td>
             </form>
             <form method="POST" action="/urls/<%=url%>?_method=DELETE">
             <td><button class="btn btn-outline-danger" type="submit">Delete</button></td>
             </form>
+            <!--
             <% } else { %>
             <form>
             <td><button class="btn btn-outline-light" >Edit</button></td>
@@ -46,6 +49,7 @@
             <td><button class="btn btn-outline-light" >Delete</button></td>
             </form>
             <% } %> 
+            -->
             <td><%=counturls(url,info).numberOfUnique%></td> 
             <td><%=counturls(url,info).numberOfClicks%></td> 
           </tr>

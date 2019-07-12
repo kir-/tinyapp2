@@ -1,3 +1,5 @@
+const moment = require('moment');
+
 const generateRandomString = (length) => {
   const charList = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
   const charListLength = charList.length;
@@ -31,10 +33,11 @@ const dataPasser = (data)=>{
 };
 
 const trackClicks = (shortURL, visitorID, data) => { //pushes time stamp
+  let currentDate = moment().format("MMMM D, hh:mm:s");
   if (!(visitorID in data[shortURL])) {
     data[shortURL][visitorID] = [];
   }
-  data[shortURL][visitorID].push('time stamp');
+  data[shortURL][visitorID].push(currentDate);
 };
 
 const getClicks = (shortURL, data) => { //counts clicks
