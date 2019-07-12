@@ -3,6 +3,12 @@ const urlDatabase = {
   "9sm5xK": {longURL: "http://www.google.com", userID:  "user2RandomID"}
 };
 
+const urlsInfo = {
+  "buvibe": {
+    'virwengpowrov': []
+  }
+};
+
 const users = {
   "userRandomID": {
     id: "userRandomID",
@@ -16,4 +22,4 @@ const users = {
   }
 };
 
-module.exports = {urlDatabase, users};
+module.exports = {urlDatabase, users, urlsInfo};
