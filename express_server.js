@@ -26,7 +26,7 @@ app.use((req,res,next)=>{
 app.use((req,res,next)=>{
   if (!(req.session.userID in users) && req.path !== '/login' && req.path !== '/register' && !req.path.includes('/u/')) {
     //req.pleaseLogin = "Please Log In";
-    res.redirect('/login');
+    res.redirect('/login?login=invalid');
   } else {
     next();
   }
@@ -65,8 +65,18 @@ app.post('/register',(req,res)=>{ //sets template vars and cookie
 });
 
 app.get('/login',(req,res)=>{ //renders login
-  res.render('login',{...emailPasser(req.session.userID),errors : undefined});
+  let login;
+  if (req.query.login === 'invalid') {
+    login = "Please log in first";
+  }
+  res.render('login',{...emailPasser(req.session.userID),errors : login || undefined});
 });
+
+app.get('/login?login=locked',(req,res)=>{ //renders login
+  console.log('in boi');
+  res.render('login',{...emailPasser(req.session.userID),errors : "Please log in first"});
+});
+
 
 app.post('/login', (req, res)=>{ //sets template vars and cookie
   const id = lookupDatabase(users, 'email', req.body.Email);
