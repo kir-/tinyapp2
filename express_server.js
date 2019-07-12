@@ -93,7 +93,7 @@ app.post('/login', (req, res)=>{ //sets template vars and cookie
 
 app.post('/logout', (req, res)=>{ //clears cookie and template vars
   res.clearCookie('userID');
-  res.redirect('/urls');
+  res.redirect('/login');
 });
 
 app.get('/urls', (req,res) => { //renders urls_index
